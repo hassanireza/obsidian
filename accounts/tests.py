@@ -30,7 +30,7 @@ def test_profile_requires_login(client):
 
 @pytest.fixture
 def logged_in_client(client, db):
-    user = User.objects.create_user(username='tester', password='testpass123')
+    _ = User.objects.create_user(username='tester', password='testpass123')
     client.login(username='tester', password='testpass123')
     return client
 
