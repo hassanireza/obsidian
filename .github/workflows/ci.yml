@@ -21,4 +21,4 @@ jobs:
       - name: Lint
         run: flake8 . --max-line-length=120 --exclude=migrations
       - name: Run tests
-        run: pytest
+        run: pytest -v
