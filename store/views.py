@@ -85,8 +85,8 @@ def toggle_wishlist(request, slug):
     obj, created = Wishlist.objects.get_or_create(user=request.user, game=game)
     if not created:
         obj.delete()
-        return JsonResponse({'status': 'removed', 'msg': f'Removed from Wishlist'})
-    return JsonResponse({'status': 'added', 'msg': f'Added to Wishlist'})
+        return JsonResponse({'status': 'removed', 'msg': 'Removed from Wishlist'})
+    return JsonResponse({'status': 'added', 'msg': 'Added to Wishlist'})
 
 
 @require_POST
