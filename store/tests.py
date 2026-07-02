@@ -21,12 +21,12 @@ def test_genre_str(db):
     assert str(genre) == 'Action'
 
 
-def test_home_page_loads(client):
+def test_home_page_loads(client, db):
     response = client.get(reverse('home'))
     assert response.status_code == 200
 
 
-def test_catalog_page_loads(client):
+def test_catalog_page_loads(client, db):
     response = client.get(reverse('catalog'))
     assert response.status_code == 200
 
@@ -36,7 +36,7 @@ def test_game_detail_page_loads(client, game):
     assert response.status_code == 200
 
 
-def test_game_detail_404_for_missing_slug(client):
+def test_game_detail_404_for_missing_slug(client, db):
     response = client.get(reverse('game_detail', args=['nonexistent']))
     assert response.status_code == 404
 
