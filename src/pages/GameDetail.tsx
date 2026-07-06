@@ -5,6 +5,7 @@ import { IconExternal, IconHeart, IconHeartFilled, IconPlay, IconStar } from "..
 import { findGame, gamesByGenre } from "../lib/categories";
 import { GENRES } from "../data/genres";
 import { useAuth } from "../lib/auth";
+import { handleCoverError } from "../lib/imageFallback";
 import "./gameDetail.css";
 
 export default function GameDetail() {
@@ -21,7 +22,7 @@ export default function GameDetail() {
   return (
     <article className="game-detail">
       <div className="game-detail__banner">
-        <img src={game.thumbnail} alt={game.name} />
+        <img src={game.thumbnail} alt={game.name} onError={handleCoverError} />
         <div className="game-detail__scrim" />
       </div>
 
