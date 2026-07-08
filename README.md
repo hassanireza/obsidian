@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/af19e05a-1f02-40dc-8cda-8ca0800d5e7f
+
 <div align="center">
   <img src="docs/readme/banner.svg" alt="Obsidian Game Store" width="100%" />
 </div>
