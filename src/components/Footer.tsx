@@ -41,7 +41,7 @@ export default function Footer() {
       </div>
       <div className="container site-footer__legal">
         <span>Obsidian Game Store</span>
-        <span>Built by Hassan Rezaie</span>
+        <span>Built by Reza Hassani</span>
       </div>
     </footer>
   );
