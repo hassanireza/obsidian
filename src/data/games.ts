@@ -192,8 +192,8 @@ export const GAMES: Game[] = [
     colorTo: "#d4af37",
     thumbnail: `${import.meta.env.BASE_URL}covers/aurum-maze.webp`,
     releaseDate: "2026-07-01",
-    repoUrl: repo("AurumMaze"),
-    playUrl: pages("AurumMaze"),
+    repoUrl: repo("aurumMaze"),
+    playUrl: pages("aurumMaze"),
     isEditorsChoice: true,
   },
 ];
