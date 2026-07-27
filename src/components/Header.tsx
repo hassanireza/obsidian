@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import { IconSearch, IconUser, IconMenu, IconClose } from "./icons";
+import { IconSearch, IconUser, IconClose } from "./icons";
 import { useAuth } from "../lib/auth";
 import "./header.css";
 
@@ -63,11 +63,11 @@ export default function Header() {
             <span>{user ? user.name : "Sign in"}</span>
           </Link>
           <button
-            className="site-header__menu-btn"
+            className="site-header__search-btn"
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label="Search"
           >
-            {menuOpen ? <IconClose /> : <IconMenu />}
+            {menuOpen ? <IconClose /> : <IconSearch />}
           </button>
         </div>
       </div>
@@ -77,29 +77,13 @@ export default function Header() {
           <form className="site-header__search site-header__search--mobile" onSubmit={submitSearch}>
             <IconSearch />
             <input
+              autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search the store"
               aria-label="Search games"
             />
           </form>
-          {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.label}
-              to={link.to}
-              className="site-header__mobile-link"
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </NavLink>
-          ))}
-          <Link
-            to={user ? "/account" : "/login"}
-            className="site-header__mobile-link"
-            onClick={() => setMenuOpen(false)}
-          >
-            {user ? "Account" : "Sign in"}
-          </Link>
         </div>
       )}
     </header>

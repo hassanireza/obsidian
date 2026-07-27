@@ -14,6 +14,27 @@
   font-size: 13px;
 }
 
+.catalog__search {
+  margin-top: 32px;
+}
+
+.catalog__search input {
+  width: 100%;
+  background: var(--color-shadow);
+  border: 1px solid var(--color-hairline);
+  color: var(--color-bone);
+  font-family: inherit;
+  font-size: 15px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  transition: border-color var(--duration-fast) var(--ease-critical);
+}
+
+.catalog__search input:focus {
+  outline: none;
+  border-color: var(--color-hairline-strong);
+}
+
 .catalog__controls {
   display: flex;
   justify-content: space-between;

@@ -136,3 +136,14 @@ p {
     letter-spacing: 0.16em;
   }
 }
+
+@media (max-width: 900px) {
+  .app-main {
+    display: block;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+
+  .site-footer {
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+}

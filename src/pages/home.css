@@ -123,6 +123,82 @@
   background: linear-gradient(var(--color-bone), transparent);
 }
 
+/* Quick navigation, sticky wayfinding strip under the hero */
+.quick-nav {
+  position: sticky;
+  top: 76px;
+  z-index: 40;
+  background: rgba(10, 10, 12, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.quick-nav__inner {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.quick-nav__scroller {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+
+.quick-nav__scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-nav__pill {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-silver);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: 999px;
+  padding: 9px 16px;
+  white-space: nowrap;
+  transition: border-color var(--duration-fast) var(--ease-critical),
+    color var(--duration-fast) var(--ease-critical),
+    background var(--duration-fast) var(--ease-critical);
+}
+
+.quick-nav__pill:hover {
+  color: var(--color-bone);
+  border-color: var(--color-bone);
+}
+
+.quick-nav__pill--solid {
+  background: var(--color-bone);
+  color: var(--color-bg);
+  border-color: var(--color-bone);
+  font-weight: 500;
+}
+
+.quick-nav__pill--solid:hover {
+  background: transparent;
+  color: var(--color-bone);
+}
+
+.quick-nav__divider {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 20px;
+  background: var(--color-hairline-strong);
+  margin: 0 2px;
+}
+
+@media (max-width: 900px) {
+  .quick-nav {
+    top: 60px;
+  }
+}
+
 /* Feature strip, asymmetric two column */
 .feature-strip {
   display: grid;

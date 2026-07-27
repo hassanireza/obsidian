@@ -69,6 +69,21 @@ export default function Catalog() {
         </p>
       </Reveal>
 
+      <div className="catalog__search">
+        <input
+          value={q}
+          onChange={(e) => {
+            const next = new URLSearchParams(params);
+            if (e.target.value) next.set("q", e.target.value);
+            else next.delete("q");
+            setParams(next);
+          }}
+          placeholder="Search all games"
+          aria-label="Search games"
+          autoFocus={params.get("focus") === "search"}
+        />
+      </div>
+
       <div className="catalog__controls">
         <div className="catalog__filters">
           <button

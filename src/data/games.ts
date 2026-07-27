@@ -19,7 +19,7 @@ export const GAMES: Game[] = [
     reviewCount: 0,
     colorFrom: "#12151c",
     colorTo: "#e8e4da",
-    thumbnail: `${import.meta.env.BASE_URL}covers/obsidian-break.webp`,
+    thumbnail: `${import.meta.env.BASE_URL}covers/obsidianbreak.webp`,
     releaseDate: "2026-07-24",
     repoUrl: repo("obsidianBreak"),
     playUrl: pages("obsidianBreak"),

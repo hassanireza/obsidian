@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import GameGrid from "../components/GameGrid";
 import SectionHeader from "../components/SectionHeader";
+import { GAMES } from "../data/games";
 import { GENRE_LIST } from "../data/genres";
 import {
   editorsChoice,
@@ -54,10 +55,45 @@ export default function Home() {
         </div>
       </section>
 
-      {/* II. Initiation, new releases */}
-      <section className="home-section container">
+      {/* Quick navigation, wayfinding for the whole library */}
+      <nav className="quick-nav" aria-label="Browse the library">
+        <div className="quick-nav__inner container">
+          <div className="quick-nav__scroller">
+            <a href="#all-games" className="quick-nav__pill quick-nav__pill--solid">
+              All {GAMES.length} games
+            </a>
+            <a href="#new" className="quick-nav__pill">New</a>
+            <a href="#trending" className="quick-nav__pill">Trending</a>
+            <a href="#editors" className="quick-nav__pill">Editors&nbsp;picks</a>
+            <span className="quick-nav__divider" />
+            {GENRE_LIST.map((g) => (
+              <Link
+                key={g.slug}
+                to={`/catalog?genre=${g.slug}`}
+                className="quick-nav__pill"
+              >
+                {g.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      {/* II. The full shelf, every game, one grid, no hunting */}
+      <section id="all-games" className="home-section home-section--tight container">
         <SectionHeader
           numeral="II"
+          label="The Shelf"
+          title={`Every game in the store (${GAMES.length})`}
+          seeAllHref="/catalog"
+        />
+        <GameGrid games={GAMES} />
+      </section>
+
+      {/* III. Initiation, new releases */}
+      <section id="new" className="home-section container">
+        <SectionHeader
+          numeral="III"
           label="Initiation"
           title="New releases"
           seeAllHref="/catalog?filter=new"
@@ -65,10 +101,10 @@ export default function Home() {
         <GameGrid games={fresh.length ? fresh : rated.slice(0, 4)} />
       </section>
 
-      {/* III. Communion, trending */}
-      <section className="home-section container">
+      {/* IV. Communion, trending */}
+      <section id="trending" className="home-section container">
         <SectionHeader
-          numeral="III"
+          numeral="IV"
           label="Communion"
           title="What the store is playing"
           seeAllHref="/catalog?filter=trending"
@@ -76,10 +112,10 @@ export default function Home() {
         <GameGrid games={trending.slice(0, 8)} />
       </section>
 
-      {/* IV. Tithe, editors choice feature strip */}
-      <section className="home-section container">
+      {/* V. Tithe, editors choice feature strip */}
+      <section id="editors" className="home-section container">
         <Reveal>
-          <p className="label-caps">IV — The Tithe</p>
+          <p className="label-caps">V — The Tithe</p>
         </Reveal>
         <div className="feature-strip" style={{ marginTop: "36px" }}>
           <Reveal as="div" className="feature-strip__media">
@@ -101,7 +137,7 @@ export default function Home() {
       {/* V. Procession, editors choice grid */}
       <section className="home-section container">
         <SectionHeader
-          numeral="V"
+          numeral="VI"
           label="Procession"
           title="Chosen by the editors"
         />
@@ -110,7 +146,7 @@ export default function Home() {
 
       {/* VI. Shedding, genres */}
       <section className="home-section container">
-        <SectionHeader numeral="VI" label="Shedding" title="Browse by genre" />
+        <SectionHeader numeral="VII" label="Shedding" title="Browse by genre" />
         <Reveal as="div" className="genre-row">
           {GENRE_LIST.map((genre) => (
             <Link
@@ -129,7 +165,7 @@ export default function Home() {
       {/* VII. Cathedral of water, mystical spotlight */}
       <section className="home-section container">
         <Reveal>
-          <p className="label-caps">VII — Cathedral of Water</p>
+          <p className="label-caps">VIII — Cathedral of Water</p>
         </Reveal>
         <div className="feature-strip feature-strip--reverse" style={{ marginTop: "36px" }}>
           <Reveal as="div" className="feature-strip__media">
@@ -156,7 +192,7 @@ export default function Home() {
       {/* VIII. Return */}
       <section className="home-section return-section container">
         <Reveal as="div" className="return-section__inner">
-          <p className="label-caps">VIII — The Return</p>
+          <p className="label-caps">IX — The Return</p>
           <h2>Come back to the catalog whenever you need it.</h2>
           <p>
             Ten games, one shelf, no accounts required to play. Sign up only
