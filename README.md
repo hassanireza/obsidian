@@ -1,35 +1,65 @@
 <div align="center">
-  <img src="docs/readme/banner.svg" alt="Obsidian Game Store" width="100%" />
+
+<img src="docs/readme/banner.svg" width="100%" alt="Obsidian Game Store banner: 11 titles, 7 genre shelves, no backend."/>
+
+<br/>
+
+<!-- identity -->
+<a href="https://github.com/hassanireza/obsidian/actions/workflows/deploy.yml"><img src="docs/readme/badges/deploy.svg" height="32" alt="Deploys with GitHub Actions"/></a>
+<img src="docs/readme/badges/titles.svg" height="32" alt="11 titles"/>
+<img src="docs/readme/badges/shelves.svg" height="32" alt="7 genre shelves"/>
+<img src="docs/readme/badges/private.svg" height="32" alt="Private portfolio project"/>
+
+<br/>
+
+<!-- stack -->
+<a href="https://react.dev"><img src="docs/readme/badges/react.svg" height="32" alt="React 19"/></a>
+<a href="https://www.typescriptlang.org"><img src="docs/readme/badges/typescript.svg" height="32" alt="TypeScript 6.0"/></a>
+<a href="https://vitejs.dev"><img src="docs/readme/badges/vite.svg" height="32" alt="Vite 8"/></a>
+
+<br/>
+
+<!-- platform -->
+<img src="docs/readme/badges/spa.svg" height="32" alt="Static single page app"/>
+<a href="#architecture"><img src="docs/readme/badges/no-backend.svg" height="32" alt="No backend"/></a>
+<a href="https://hassanireza.github.io/obsidian/"><img src="docs/readme/badges/github-pages.svg" height="32" alt="Hosted on GitHub Pages"/></a>
+
+<br/><br/>
+
+*A React and TypeScript rebuild of the Obsidian game catalog, deployed as a static single page app to GitHub Pages.*
+
+<br/>
+
+[Overview](#overview) · [Architecture](#architecture) · [Catalog](#catalog) · [About](#about-this-repository)
+
 </div>
 
-<div align="center">
+---
 
-[![Deploy to GitHub Pages](https://github.com/hassanireza/obsidian/actions/workflows/deploy.yml/badge.svg)](https://github.com/hassanireza/obsidian/actions/workflows/deploy.yml)
-[![React](https://img.shields.io/badge/React-19-44B78B?logo=react&logoColor=white&labelColor=161B22)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-44B78B?logo=typescript&logoColor=white&labelColor=161B22)](https://www.typescriptlang.org)
-[![Vite](https://img.shields.io/badge/Vite-8-44B78B?logo=vite&logoColor=white&labelColor=161B22)](https://vitejs.dev)
-[![GitHub Pages](https://img.shields.io/badge/hosted%20on-GitHub%20Pages-44B78B?logo=github&logoColor=white&labelColor=161B22)](https://hassanireza.github.io/obsidian/)
-[![No backend](https://img.shields.io/badge/backend-none-8B949E?labelColor=161B22)](#local-development)
+<a id="overview"></a>
+## <img src="docs/readme/icons/store.svg" width="24" height="24" align="absmiddle" alt=""/> Overview
 
-</div>
+**Obsidian Game Store** is a storefront for a catalog of browser games. Eleven titles sit on seven genre shelves, and every entry is a discrete repository composed into a single storefront by `src/data/games.ts`.
 
-<br/>
+The app is a static single page build with no backend of its own, hosted on GitHub Pages and built with React 19, TypeScript 6.0 and Vite 8.
 
-A React and TypeScript rebuild of the Obsidian game catalog, deployed as a
-static single page app to GitHub Pages.
+---
 
-<br/>
+<a id="architecture"></a>
+## <img src="docs/readme/icons/layers.svg" width="24" height="24" align="absmiddle" alt=""/> Architecture
 
-## Architecture
+![Data flow from games.ts through categories, grid and card components, into the app pages, into the GitHub Actions deploy pipeline](docs/readme/architecture.svg)
 
-<img src="docs/readme/architecture.svg" alt="Data flow from games.ts through categories, grid, and card components, into the app pages, into the GitHub Actions deploy pipeline" width="100%" />
+Data flows one way. `games.ts` feeds the categories, the grid lays each shelf out, card components render each title, the app pages assemble the storefront, and the GitHub Actions pipeline builds and deploys the result.
 
-<br/>
+---
 
-## Catalog
+<a id="catalog"></a>
+## <img src="docs/readme/icons/gem.svg" width="24" height="24" align="absmiddle" alt=""/> Catalog
 
-Eleven titles across seven genre shelves, each entry a discrete repository
-composed into a single storefront by `src/data/games.ts`.
+Eleven titles across seven genre shelves, each entry a discrete repository composed into a single storefront by `src/data/games.ts`.
+
+![Eleven titles across seven genre shelves](docs/readme/catalog.svg)
 
 <br/>
 
@@ -43,7 +73,7 @@ composed into a single storefront by `src/data/games.ts`.
 
 A gravity physics ritual across a submerged ruin. Draw the fragment back, release it into the dark, and let each chamber's wells and currents carry it to the socket that calls it home. Ten chambers, real momentum, no two wells pull the same way twice.
 
-**Genre:** Arcade &nbsp;·&nbsp; **Developer:** Obsidian Originals &nbsp;·&nbsp; **Editors' Choice**
+<img src="docs/readme/icons/blocks.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Arcade &nbsp;·&nbsp; **Developer:** Obsidian Originals &nbsp;·&nbsp; <img src="docs/readme/icons/spark.svg" width="16" height="16" align="absmiddle" alt=""/> **Editors' Choice**
 
 </td>
 </tr>
@@ -56,7 +86,7 @@ A gravity physics ritual across a submerged ruin. Draw the fragment back, releas
 
 A cyberpunk tarot experience covering all 22 Major Arcana cards, reimagined for a rain drenched neon city. Draw a single card, browse the full deck, or pull a three card past, present, future spread.
 
-**Genre:** Mystical &nbsp;·&nbsp; **Developer:** Night City Dev &nbsp;·&nbsp; **Editors' Choice**
+<img src="docs/readme/icons/spark.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Mystical &nbsp;·&nbsp; **Developer:** Night City Dev &nbsp;·&nbsp; <img src="docs/readme/icons/spark.svg" width="16" height="16" align="absmiddle" alt=""/> **Editors' Choice**
 
 </td>
 </tr>
@@ -69,7 +99,7 @@ A cyberpunk tarot experience covering all 22 Major Arcana cards, reimagined for 
 
 A curated chess puzzle collection built from decisive tactics played by Morphy, Fischer, Tal and Kasparov. A context aware hint system scales from beginner to grandmaster.
 
-**Genre:** Puzzle & Strategy &nbsp;·&nbsp; **Developer:** CheckMate Labs &nbsp;·&nbsp; **Editors' Choice**
+<img src="docs/readme/icons/board.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Puzzle &amp; Strategy &nbsp;·&nbsp; **Developer:** CheckMate Labs &nbsp;·&nbsp; <img src="docs/readme/icons/spark.svg" width="16" height="16" align="absmiddle" alt=""/> **Editors' Choice**
 
 </td>
 </tr>
@@ -82,7 +112,7 @@ A curated chess puzzle collection built from decisive tactics played by Morphy, 
 
 A private Texas Hold'em room with the elegance of a members only club. Face adaptive opponents and track VPIP, showdown rate and full hand history.
 
-**Genre:** Card &nbsp;·&nbsp; **Developer:** Monarch Studios &nbsp;·&nbsp; **Editors' Choice**
+<img src="docs/readme/icons/cards.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Card &nbsp;·&nbsp; **Developer:** Monarch Studios &nbsp;·&nbsp; <img src="docs/readme/icons/spark.svg" width="16" height="16" align="absmiddle" alt=""/> **Editors' Choice**
 
 </td>
 </tr>
@@ -95,7 +125,7 @@ A private Texas Hold'em room with the elegance of a members only club. Face adap
 
 A minimal arcade chase built from black space, architectural white linework and pure gold. Guide a runner through ten handcrafted mazes while four rivals hunt the same paths.
 
-**Genre:** Arcade &nbsp;·&nbsp; **Developer:** Obsidian Originals &nbsp;·&nbsp; **Editors' Choice**
+<img src="docs/readme/icons/blocks.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Arcade &nbsp;·&nbsp; **Developer:** Obsidian Originals &nbsp;·&nbsp; <img src="docs/readme/icons/spark.svg" width="16" height="16" align="absmiddle" alt=""/> **Editors' Choice**
 
 </td>
 </tr>
@@ -108,7 +138,7 @@ A minimal arcade chase built from black space, architectural white linework and 
 
 A nostalgic endless space racer set deep in the drift of an alien cosmos. Steer through asteroid fields and face sector bosses with a combo multiplier on the line.
 
-**Genre:** Racing &nbsp;·&nbsp; **Developer:** CosmoDrome Studios
+<img src="docs/readme/icons/route.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Racing &nbsp;·&nbsp; **Developer:** CosmoDrome Studios
 
 </td>
 </tr>
@@ -121,7 +151,7 @@ A nostalgic endless space racer set deep in the drift of an alien cosmos. Steer 
 
 A high speed combat runner across the red sands of the Martian frontier. Jump, slide and fire an infinite energy laser as difficulty scales with every second.
 
-**Genre:** Action &nbsp;·&nbsp; **Developer:** Driftline Games
+<img src="docs/readme/icons/bolt.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Action &nbsp;·&nbsp; **Developer:** Driftline Games
 
 </td>
 </tr>
@@ -134,7 +164,7 @@ A high speed combat runner across the red sands of the Martian frontier. Jump, s
 
 A serene aerial run through layered floating terraces. Manage beam energy while navigating procedurally generated obstacle patterns across endless vertical layers.
 
-**Genre:** Arcade &nbsp;·&nbsp; **Developer:** Driftline Games
+<img src="docs/readme/icons/blocks.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Arcade &nbsp;·&nbsp; **Developer:** Driftline Games
 
 </td>
 </tr>
@@ -147,7 +177,7 @@ A serene aerial run through layered floating terraces. Manage beam energy while 
 
 A high energy take on the classic block stacking format. Stack falling pieces to clear lines and climb the leaderboard before the grid fills up.
 
-**Genre:** Puzzle & Strategy &nbsp;·&nbsp; **Developer:** Vespers
+<img src="docs/readme/icons/board.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Puzzle &amp; Strategy &nbsp;·&nbsp; **Developer:** Vespers
 
 </td>
 </tr>
@@ -160,7 +190,7 @@ A high energy take on the classic block stacking format. Stack falling pieces to
 
 A tactical grid based puzzle that rewards pattern recognition and forward thinking. Connect pathways on the neural network grid before the board locks up.
 
-**Genre:** Puzzle & Strategy &nbsp;·&nbsp; **Developer:** Vespers
+<img src="docs/readme/icons/board.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Puzzle &amp; Strategy &nbsp;·&nbsp; **Developer:** Vespers
 
 </td>
 </tr>
@@ -173,21 +203,29 @@ A tactical grid based puzzle that rewards pattern recognition and forward thinki
 
 The two player classic with a smart AI opponent and a clean local multiplayer mode. Subtle animations reward every winning line.
 
-**Genre:** Classic &nbsp;·&nbsp; **Developer:** Vespers
+<img src="docs/readme/icons/covenant.svg" width="16" height="16" align="absmiddle" alt=""/> **Genre:** Classic &nbsp;·&nbsp; **Developer:** Vespers
 
 </td>
 </tr>
 </table>
 
-<br/>
+---
 
-## About this repository
+<a id="about-this-repository"></a>
+## <img src="docs/readme/icons/lock.svg" width="24" height="24" align="absmiddle" alt=""/> About this repository
 
-This is a private portfolio project. It is not open to external
-contributions, forks intended for submission, or collaboration requests.
+This is a private portfolio project. It is not open to external contributions, forks intended for submission, or collaboration requests.
 
-<br/>
+---
 
 <div align="center">
+
+<br/>
+
+<img src="docs/readme/footer.svg" width="640" alt="Obsidian Game Store: React, TypeScript, Vite and GitHub Pages."/>
+
+<br/>
+
 <sub>Built with React, TypeScript, and Vite. No dependencies at runtime beyond the browser.</sub>
+
 </div>
