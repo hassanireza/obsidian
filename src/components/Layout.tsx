@@ -7,9 +7,14 @@ import MobileTabBar from "./MobileTabBar";
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <GrainOverlay />
       <Header />
-      <main className="app-main">{children}</main>
+      <main id="main" className="app-main">
+        {children}
+      </main>
       <Footer />
       <MobileTabBar />
     </>

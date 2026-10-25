@@ -1,0 +1,127 @@
+.rail {
+  --rail-gap: 16px;
+  --rail-card: clamp(188px, 17vw, 244px);
+  --rail-pad: max(
+    var(--edge),
+    calc((100% - var(--max-content)) / 2 + var(--edge))
+  );
+  position: relative;
+}
+
+.rail__track {
+  display: flex;
+  gap: var(--rail-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  /* Bleed to the screen edge while the first card lines up with the grid */
+  padding: 4px var(--rail-pad) 6px;
+  scroll-padding-inline: var(--rail-pad);
+}
+
+.rail__track::-webkit-scrollbar {
+  display: none;
+}
+
+.rail__track:focus-visible {
+  outline-offset: -2px;
+}
+
+.rail__item {
+  flex: none;
+  width: var(--rail-card);
+  scroll-snap-align: start;
+}
+
+/* Arrow buttons, pointer devices only */
+.rail__nav {
+  position: absolute;
+  top: calc(var(--rail-card) * 0.67);
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-hairline-strong);
+  background: var(--color-glass-strong);
+  color: var(--color-bone);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-float);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.rail__nav svg {
+  width: 20px;
+  height: 20px;
+}
+
+.rail__nav--prev {
+  left: max(12px, calc((100% - var(--max-content)) / 2 + 4px));
+}
+
+.rail__nav--next {
+  right: max(12px, calc((100% - var(--max-content)) / 2 + 4px));
+}
+
+.rail__nav:hover:not(:disabled) {
+  background: var(--color-bone);
+  color: var(--color-bg);
+}
+
+.rail__nav:disabled {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rail[data-overflowing="true"] .rail__nav {
+    display: flex;
+  }
+
+  .rail:hover .rail__nav,
+  .rail:focus-within .rail__nav {
+    opacity: 1;
+  }
+}
+
+/* Progress bar */
+.rail__progress {
+  position: relative;
+  height: 2px;
+  margin: 14px var(--rail-pad) 0;
+  border-radius: 2px;
+  background: var(--color-hairline);
+  overflow: hidden;
+}
+
+.rail__progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 30%;
+  border-radius: 2px;
+  background: var(--color-bone-dim);
+  will-change: transform;
+}
+
+.rail[data-overflowing="false"] .rail__progress {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .rail {
+    --rail-gap: 12px;
+    --rail-card: min(46vw, 210px);
+  }
+  .rail__progress {
+    margin-top: 12px;
+  }
+}

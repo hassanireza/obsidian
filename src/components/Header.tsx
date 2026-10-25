@@ -1,91 +1,123 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "./Logo";
-import { IconSearch, IconUser, IconClose } from "./icons";
+import SearchOverlay from "./SearchOverlay";
+import { IconSearch, IconUser } from "./icons";
 import { useAuth } from "../lib/auth";
 import "./header.css";
 
-const NAV_LINKS = [
-  { to: "/catalog", label: "Catalog" },
-  { to: "/catalog?filter=new", label: "New" },
-  { to: "/catalog?filter=trending", label: "Trending" },
+interface NavLinkDef {
+  to: string;
+  label: string;
+  /** Matches /catalog?filter=<value>; "" means the unfiltered catalog. */
+  filter?: string;
+}
+
+const NAV_LINKS: NavLinkDef[] = [
+  { to: "/catalog", label: "Discover", filter: "" },
+  { to: "/catalog?filter=new", label: "New", filter: "new" },
+  { to: "/catalog?filter=trending", label: "Trending", filter: "trending" },
   { to: "/genres", label: "Genres" },
 ];
 
+const isMac =
+  typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [query, setQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const { pathname, search } = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const submitSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (query.trim()) {
-      navigate(`/catalog?q=${encodeURIComponent(query.trim())}`);
-      setMenuOpen(false);
-    }
+  // Cmd/Ctrl+K and "/" open search from anywhere
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const typing =
+        e.target instanceof HTMLElement &&
+        (e.target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName));
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      } else if (e.key === "/" && !typing) {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const currentFilter = new URLSearchParams(search).get("filter") ?? "";
+  const isActive = (link: NavLinkDef) => {
+    if (link.filter === undefined) return pathname.startsWith(link.to);
+    return pathname === "/catalog" && currentFilter === link.filter;
   };
+
+  const initial = user?.name?.trim().charAt(0).toUpperCase();
 
   return (
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
       <div className="site-header__inner container">
-        <Link to="/" className="site-header__logo" onClick={() => setMenuOpen(false)}>
-          <Logo />
+        <Link to="/" className="site-header__logo" aria-label="Obsidian Game Store, home">
+          <span className="site-header__logo-full">
+            <Logo variant="full" />
+          </span>
+          <span className="site-header__logo-short">
+            <Logo variant="short" />
+          </span>
         </Link>
 
-        <nav className="site-header__nav">
+        <nav className="site-header__nav" aria-label="Main">
           {NAV_LINKS.map((link) => (
-            <NavLink key={link.label} to={link.to} className="site-header__link">
+            <Link
+              key={link.label}
+              to={link.to}
+              className="site-header__link"
+              aria-current={isActive(link) ? "page" : undefined}
+            >
               {link.label}
-            </NavLink>
+            </Link>
           ))}
         </nav>
 
-        <div className="site-header__actions">
-          <form className="site-header__search" onSubmit={submitSearch}>
-            <IconSearch />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search the store"
-              aria-label="Search games"
-            />
-          </form>
-          <Link to={user ? "/account" : "/login"} className="site-header__account">
-            <IconUser />
-            <span>{user ? user.name : "Sign in"}</span>
-          </Link>
-          <button
-            className="site-header__search-btn"
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Search"
-          >
-            {menuOpen ? <IconClose /> : <IconSearch />}
-          </button>
-        </div>
+        <button
+          type="button"
+          className="site-header__search"
+          onClick={() => setSearchOpen(true)}
+          aria-label="Search games"
+          aria-haspopup="dialog"
+        >
+          <IconSearch />
+          <span className="site-header__search-text">Search games</span>
+          <kbd className="site-header__kbd" aria-hidden="true">
+            {isMac ? "⌘K" : "Ctrl K"}
+          </kbd>
+        </button>
+
+        <Link
+          to={user ? "/account" : "/login"}
+          className="site-header__account"
+          aria-label={user ? "Your account" : "Sign in"}
+        >
+          {user ? (
+            <span className="site-header__avatar">{initial}</span>
+          ) : (
+            <>
+              <IconUser />
+              <span>Sign in</span>
+            </>
+          )}
+        </Link>
       </div>
 
-      {menuOpen && (
-        <div className="site-header__mobile">
-          <form className="site-header__search site-header__search--mobile" onSubmit={submitSearch}>
-            <IconSearch />
-            <input
-              autoFocus
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search the store"
-              aria-label="Search games"
-            />
-          </form>
-        </div>
-      )}
+      {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
     </header>
   );
 }

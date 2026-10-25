@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useReveal<T extends HTMLElement>(threshold = 0.15) {
+export function useReveal<T extends HTMLElement>(threshold = 0.12) {
   const ref = useRef<T | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -22,7 +22,7 @@ export function useReveal<T extends HTMLElement>(threshold = 0.15) {
           }
         });
       },
-      { threshold }
+      { threshold, rootMargin: "0px 0px -6% 0px" }
     );
 
     observer.observe(node);

@@ -1,31 +1,69 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import GameGrid from "../components/GameGrid";
 import Reveal from "../components/Reveal";
+import { IconClose } from "../components/icons";
 import { GAMES } from "../data/games";
 import { GENRE_LIST } from "../data/genres";
-import { newReleases, searchGames, trendingGames } from "../lib/categories";
+import {
+  editorsChoice,
+  matchesQuery,
+  newReleases,
+  trendingGames,
+} from "../lib/categories";
+import type { Game } from "../types";
 import "./catalog.css";
 
-type SortKey = "relevance" | "rating" | "plays" | "newest";
+type SortKey = "featured" | "rating" | "plays" | "newest";
+
+const SORTS: Array<{ key: SortKey; label: string }> = [
+  { key: "featured", label: "Featured" },
+  { key: "rating", label: "Top rated" },
+  { key: "plays", label: "Most played" },
+  { key: "newest", label: "Newest" },
+];
+
+const FILTERS = [
+  { key: "", label: "All", title: "All games" },
+  { key: "new", label: "New", title: "New releases" },
+  { key: "trending", label: "Trending", title: "Trending now" },
+  { key: "editors", label: "Editors\u2019 picks", title: "Editors\u2019 picks" },
+] as const;
+
+const poolFor = (filter: string): Game[] => {
+  switch (filter) {
+    case "new":
+      return newReleases();
+    case "trending":
+      return trendingGames();
+    case "editors":
+      return editorsChoice();
+    default:
+      return GAMES;
+  }
+};
 
 export default function Catalog() {
   const [params, setParams] = useSearchParams();
-  const genre = params.get("genre") ?? "";
   const filter = params.get("filter") ?? "";
+  const genre = params.get("genre") ?? "";
   const q = params.get("q") ?? "";
-  const [sort, setSort] = useState<SortKey>("relevance");
+  const sortParam = params.get("sort") as SortKey | null;
+  const sort: SortKey = SORTS.some((s) => s.key === sortParam) ? sortParam! : "featured";
 
-  const base = useMemo(() => {
-    if (q) return searchGames(q);
-    if (filter === "new") return newReleases();
-    if (filter === "trending") return trendingGames();
-    return GAMES;
-  }, [q, filter]);
+  const setParam = (key: string, value: string) => {
+    const next = new URLSearchParams(params);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setParams(next, { replace: true });
+  };
 
-  const filtered = useMemo(() => {
-    let list = genre ? base.filter((g) => g.genre === genre) : base;
-    list = [...list];
+  const pool = useMemo(() => poolFor(filter), [filter]);
+
+  const results = useMemo(() => {
+    const list = pool.filter(
+      (g) => (!genre || g.genre === genre) && matchesQuery(g, q)
+    );
     if (sort === "rating") list.sort((a, b) => b.rating - a.rating);
     if (sort === "plays") list.sort((a, b) => b.plays - a.plays);
     if (sort === "newest")
@@ -34,99 +72,111 @@ export default function Catalog() {
           new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
       );
     return list;
-  }, [base, genre, sort]);
+  }, [pool, genre, q, sort]);
 
-  const setGenre = (slug: string) => {
-    const next = new URLSearchParams(params);
-    if (slug) next.set("genre", slug);
-    else next.delete("genre");
-    setParams(next);
-  };
-
-  const setFilter = (key: string) => {
-    const next = new URLSearchParams(params);
-    if (key) next.set("filter", key);
-    else next.delete("filter");
-    next.delete("q");
-    setParams(next);
-  };
-
+  const filterTitle = FILTERS.find((f) => f.key === filter)?.title ?? "All games";
+  const genreName = GENRE_LIST.find((g) => g.slug === genre)?.name;
   const heading = q
-    ? `Results for "${q}"`
-    : filter === "new"
-    ? "New releases"
-    : filter === "trending"
-    ? "Trending now"
-    : "Full catalog";
+    ? `Results for \u201c${q}\u201d`
+    : genreName && !filter
+    ? genreName
+    : filterTitle;
+
+  const hasFilters = Boolean(filter || genre || q);
 
   return (
     <div className="catalog container">
-      <Reveal as="div" className="catalog__header">
+      <Reveal as="header" className="catalog__header">
         <p className="label-caps">Catalog</p>
         <h1>{heading}</h1>
-        <p className="catalog__count">
-          {filtered.length} game{filtered.length === 1 ? "" : "s"}
-        </p>
       </Reveal>
 
-      <div className="catalog__search">
-        <input
-          value={q}
-          onChange={(e) => {
-            const next = new URLSearchParams(params);
-            if (e.target.value) next.set("q", e.target.value);
-            else next.delete("q");
-            setParams(next);
-          }}
-          placeholder="Search all games"
-          aria-label="Search games"
-          autoFocus={params.get("focus") === "search"}
-        />
-      </div>
-
-      <div className="catalog__controls">
-        <div className="catalog__filters">
-          <button
-            className={`chip ${!filter ? "chip--active" : ""}`}
-            onClick={() => setFilter("")}
-          >
-            All
-          </button>
-          <button
-            className={`chip ${filter === "new" ? "chip--active" : ""}`}
-            onClick={() => setFilter("new")}
-          >
-            New ({newReleases().length})
-          </button>
-          <button
-            className={`chip ${filter === "trending" ? "chip--active" : ""}`}
-            onClick={() => setFilter("trending")}
-          >
-            Trending
-          </button>
+      <div className="catalog__filters" role="group" aria-label="Filters">
+        <div className="chip-rail" role="group" aria-label="Collection">
+          {FILTERS.map((f) => (
+            <button
+              key={f.key}
+              type="button"
+              className="chip"
+              aria-pressed={filter === f.key}
+              onClick={() => setParam("filter", f.key)}
+            >
+              {f.label}
+              <span className="chip__count">{poolFor(f.key).length}</span>
+            </button>
+          ))}
         </div>
 
-        <div className="catalog__genres">
-          <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-            <option value="">All genres</option>
-            {GENRE_LIST.map((g) => (
-              <option key={g.slug} value={g.slug}>
-                {g.name}
-              </option>
-            ))}
-          </select>
-          <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
-            <option value="relevance">Sort: Relevance</option>
-            <option value="rating">Sort: Rating</option>
-            <option value="plays">Sort: Most played</option>
-            <option value="newest">Sort: Newest</option>
-          </select>
+        <div className="chip-rail" role="group" aria-label="Genre">
+          <button
+            type="button"
+            className="chip"
+            aria-pressed={!genre}
+            onClick={() => setParam("genre", "")}
+          >
+            All genres
+          </button>
+          {GENRE_LIST.map((g) => (
+            <button
+              key={g.slug}
+              type="button"
+              className="chip"
+              aria-pressed={genre === g.slug}
+              onClick={() => setParam("genre", g.slug)}
+            >
+              {g.name}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="catalog__grid">
-        <GameGrid games={filtered} />
+      <div className="catalog__toolbar">
+        <p className="catalog__count" aria-live="polite">
+          {results.length} game{results.length === 1 ? "" : "s"}
+        </p>
+
+        <div className="catalog__toolbar-end">
+          {hasFilters && (
+            <button
+              type="button"
+              className="catalog__clear"
+              onClick={() => setParams({}, { replace: true })}
+            >
+              <IconClose /> Clear all
+            </button>
+          )}
+          <label className="catalog__sort">
+            <span className="sr-only">Sort by</span>
+            <select
+              className="select"
+              value={sort}
+              onChange={(e) => setParam("sort", e.target.value === "featured" ? "" : e.target.value)}
+            >
+              {SORTS.map((s) => (
+                <option key={s.key} value={s.key}>
+                  {s.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
+
+      {results.length > 0 ? (
+        <GameGrid games={results} />
+      ) : (
+        <div className="catalog__empty">
+          <h2>Nothing matches yet</h2>
+          <p>Try a different genre, or clear the filters to see everything.</p>
+          <button
+            type="button"
+            className="btn btn--ghost"
+            onClick={() => setParams({}, { replace: true })}
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
     </div>
   );
 }

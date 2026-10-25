@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import GameGrid from "../components/GameGrid";
 import { GAMES } from "../data/games";
 import { useAuth } from "../lib/auth";
@@ -8,9 +9,13 @@ export default function AccountLibrary() {
 
   if (games.length === 0) {
     return (
-      <p className="account-empty">
-        Nothing here yet. Play a game and it lands in your library.
-      </p>
+      <div className="account-empty">
+        <h2>Your library is empty</h2>
+        <p>Play a game and it lands here.</p>
+        <Link className="btn btn--primary" to="/catalog">
+          Browse games
+        </Link>
+      </div>
     );
   }
 

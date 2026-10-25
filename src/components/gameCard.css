@@ -1,79 +1,141 @@
 .game-card {
+  position: relative;
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  min-width: 0;
 }
 
 .game-card__media {
   position: relative;
-  display: block;
   aspect-ratio: 3 / 4;
   overflow: hidden;
+  border-radius: var(--radius-md);
   background: var(--color-charcoal);
+  box-shadow: var(--shadow-card);
 }
 
-.game-card__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.85) brightness(0.92);
-  transition: transform var(--duration-med) var(--ease-critical),
-    filter var(--duration-med) var(--ease-critical);
+.game-card__media::after {
+  /* Hairline edge that sits above the art */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid var(--color-hairline);
+  pointer-events: none;
+  z-index: 2;
 }
 
-.game-card:hover .game-card__media img {
-  transform: scale(1.03);
-  filter: saturate(1) brightness(1);
+.game-card__media .cover {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.game-card__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 10, 12, 0.55), transparent 38%);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .game-card:hover .game-card__media .cover {
+    transform: scale(1.04);
+  }
+}
+
+.game-card__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
 }
 
 .game-card__wish {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 6px;
+  right: 6px;
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
   color: var(--color-bone);
-  opacity: 0.85;
-  transition: opacity var(--duration-fast) var(--ease-critical);
 }
 
-.game-card__wish:hover {
-  opacity: 1;
+.game-card__wish svg {
+  width: 20px;
+  height: 20px;
+  padding: 7px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  background: rgba(10, 10, 12, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-hairline-strong);
+  transition: transform var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.game-card__wish:hover svg {
+  background: rgba(10, 10, 12, 0.85);
+}
+
+.game-card__wish:active svg {
+  transform: scale(0.9);
+}
+
+.game-card__wish[aria-pressed="true"] svg {
+  background: var(--color-bone);
+  color: var(--color-bg);
+  border-color: var(--color-bone);
 }
 
 .game-card__body {
-  padding-top: 18px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
+  min-width: 0;
 }
 
 .game-card__title {
-  font-size: 19px;
-  margin-top: 4px;
-  transition: color var(--duration-fast) var(--ease-critical);
+  font-size: 18px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.game-card:hover .game-card__title {
-  color: var(--color-bone-dim);
+/* Stretched link: the whole card is one tap target */
+.game-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
-.game-card__tagline {
-  font-size: 13px;
-  color: var(--color-silver);
-  font-weight: 300;
+.game-card__link:focus-visible {
+  outline: none;
+}
+
+.game-card:has(.game-card__link:focus-visible) .game-card__media {
+  outline: 2px solid var(--color-bone);
+  outline-offset: 3px;
 }
 
 .game-card__meta {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 8px;
-  font-size: 12px;
+  gap: 6px;
+  font-size: 13px;
   color: var(--color-silver);
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .game-card__rating {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   color: var(--color-bone-dim);
 }
 
