@@ -1,29 +1,64 @@
 :root {
-  /* Palette */
+  color-scheme: dark;
+
+  /* Palette (unchanged brand colours, plus two surface steps for depth) */
   --color-bg: #0a0a0c;
+  --color-surface: #101114;
+  --color-surface-2: #17191d;
   --color-charcoal: #1c1e22;
   --color-shadow: #12151c;
   --color-bone: #e8e4da;
-  --color-silver: #8a8f92;
-  --color-bone-dim: #a8a49a;
-  --color-hairline: rgba(232, 228, 218, 0.12);
-  --color-hairline-strong: rgba(232, 228, 218, 0.22);
+  --color-bone-dim: #b3afa5;
+  --color-silver: #8f9497;
+  --color-hairline: rgba(232, 228, 218, 0.1);
+  --color-hairline-strong: rgba(232, 228, 218, 0.2);
+  --color-glass: rgba(14, 15, 18, 0.72);
+  --color-glass-strong: rgba(14, 15, 18, 0.88);
 
   /* Typography */
-  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Fraunces Variable", "Fraunces", "Iowan Old Style",
+    "Palatino Linotype", Georgia, serif;
+  --font-body: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 
-  --tracking-label: 0.22em;
+  --tracking-label: 0.2em;
   --tracking-wide: 0.08em;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* Elevation */
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 24px 48px -28px rgba(0, 0, 0, 0.9);
+  --shadow-float: 0 18px 50px -12px rgba(0, 0, 0, 0.75);
 
   /* Motion */
   --ease-critical: cubic-bezier(0.16, 0.5, 0.1, 1);
-  --duration-slow: 1200ms;
-  --duration-med: 900ms;
-  --duration-fast: 420ms;
+  --ease-out: cubic-bezier(0.22, 0.8, 0.2, 1);
+  --duration-fast: 200ms;
+  --duration-med: 420ms;
+  --duration-slow: 700ms;
 
   /* Layout */
-  --gap-section: clamp(96px, 16vw, 220px);
-  --edge: clamp(20px, 5vw, 72px);
-  --max-content: 1400px;
+  --edge: clamp(16px, 4vw, 56px);
+  --max-content: 1360px;
+  --header-h: 68px;
+  --tabbar-h: 64px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --section-gap: clamp(36px, 5vw, 72px);
+
+  /* Stacking */
+  --z-header: 100;
+  --z-tabbar: 110;
+  --z-overlay: 200;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-h: 56px;
+  }
 }

@@ -7,28 +7,28 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container site-footer__inner">
         <div className="site-footer__brand">
-          <Logo compact />
+          <Logo variant="full" />
           <p className="site-footer__tag">
             A quiet catalog for small, well made games.
           </p>
         </div>
 
-        <div className="site-footer__cols">
-          <div>
+        <nav className="site-footer__cols" aria-label="Footer">
+          <div className="site-footer__col">
             <p className="label-caps">Browse</p>
-            <Link to="/catalog">Full catalog</Link>
+            <Link to="/catalog">All games</Link>
             <Link to="/catalog?filter=new">New releases</Link>
             <Link to="/catalog?filter=trending">Trending</Link>
             <Link to="/genres">Genres</Link>
           </div>
-          <div>
+          <div className="site-footer__col">
             <p className="label-caps">Account</p>
             <Link to="/login">Sign in</Link>
             <Link to="/signup">Create account</Link>
             <Link to="/account/library">Library</Link>
             <Link to="/account/wishlist">Wishlist</Link>
           </div>
-          <div>
+          <div className="site-footer__col">
             <p className="label-caps">Studio</p>
             <a href="https://github.com/hassanireza" target="_blank" rel="noreferrer">
               GitHub
@@ -37,7 +37,7 @@ export default function Footer() {
               Portfolio
             </a>
           </div>
-        </div>
+        </nav>
       </div>
       <div className="container site-footer__legal">
         <span>Obsidian Game Store</span>

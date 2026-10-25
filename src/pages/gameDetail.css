@@ -1,112 +1,238 @@
-.game-detail__banner {
+.game-detail {
   position: relative;
-  height: 56vh;
-  min-height: 340px;
+  isolation: isolate;
 }
 
-.game-detail__banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.75) brightness(0.6);
+/* Ambient glow from the poster, fading into the page */
+.game-detail__backdrop {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: min(78vh, 720px);
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.game-detail__scrim {
+.game-detail__backdrop .cover {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  filter: blur(70px) saturate(1.2) brightness(0.5);
+  opacity: 0.85;
+}
+
+.game-detail__backdrop::after {
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(10, 10, 12, 0.2), var(--color-bg) 96%);
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 12, 0.35),
+    var(--color-bg) 96%
+  );
 }
 
-.game-detail__body {
-  margin-top: -120px;
-  position: relative;
-  z-index: 1;
+.game-detail__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: start;
+  padding-top: clamp(24px, 4vw, 56px);
 }
 
-.game-detail__intro h1 {
-  font-size: clamp(34px, 5vw, 58px);
-  margin-top: 14px;
+.game-detail__poster {
+  position: sticky;
+  top: calc(var(--header-h) + var(--safe-top) + 24px);
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-charcoal);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.9),
+    0 0 0 1px var(--color-hairline-strong);
 }
 
-.game-detail__tagline {
-  margin-top: 16px;
-  font-size: 16px;
-  color: var(--color-bone-dim);
-  font-weight: 300;
+.game-detail__info {
+  min-width: 0;
+  max-width: 680px;
 }
 
-.game-detail__stats {
+.game-detail__crumbs {
   display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  margin-top: 28px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
   font-size: 13px;
   color: var(--color-silver);
 }
 
-.game-detail__stats span {
-  display: flex;
+.game-detail__crumbs a {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  min-height: 32px;
 }
 
-.game-detail__stats svg {
-  width: 14px;
-  height: 14px;
-}
-
-.game-detail__actions {
-  margin-top: 36px;
-  flex-wrap: wrap;
-}
-
-.game-detail__actions svg {
-  width: 14px;
-  height: 14px;
-}
-
-.game-detail__owned {
-  margin-top: 16px;
-  font-size: 12px;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--color-bone-dim);
-}
-
-.game-detail__description {
-  margin-top: 40px;
-  max-width: 640px;
-  color: var(--color-silver);
-  font-weight: 300;
-  line-height: 1.85;
-  font-size: 15px;
-  border-top: 1px solid var(--color-hairline);
-  padding-top: 32px;
-}
-
-.game-detail__related {
-  margin-top: var(--gap-section);
-}
-
-.game-detail__back {
-  margin-top: 100px;
-  padding-bottom: 100px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  color: var(--color-silver);
-}
-
-.game-detail__back a:hover {
+.game-detail__crumbs a:hover {
   color: var(--color-bone);
 }
 
-@media (max-width: 640px) {
-  .game-detail__body {
-    margin-top: -60px;
+.game-detail__badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.game-detail__title {
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+.game-detail__tagline {
+  margin-top: 16px;
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.5;
+  color: var(--color-bone-dim);
+}
+
+.game-detail__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.game-detail__play {
+  flex: 0 1 220px;
+  min-width: 160px;
+}
+
+.btn.is-on {
+  background: var(--color-bone);
+  border-color: var(--color-bone);
+  color: var(--color-bg);
+}
+
+.game-detail__note {
+  min-height: 24px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--color-silver);
+}
+
+.game-detail__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 20px 0 0;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  background: rgba(16, 17, 20, 0.6);
+  overflow: hidden;
+}
+
+.game-detail__stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  border-left: 1px solid var(--color-hairline);
+  min-width: 0;
+}
+
+.game-detail__stats > div:first-child {
+  border-left: none;
+}
+
+.game-detail__stats dd {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.game-detail__stats dd svg {
+  display: inline;
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+  vertical-align: -1px;
+}
+
+.game-detail__stats small {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-silver);
+}
+
+.game-detail__stats small a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+}
+
+.game-detail__stats small a:hover {
+  color: var(--color-bone);
+}
+
+.game-detail__stats small svg {
+  width: 11px;
+  height: 11px;
+}
+
+.game-detail__about {
+  margin-top: 36px;
+}
+
+.game-detail__about p {
+  margin-top: 12px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--color-bone-dim);
+}
+
+.game-detail__related {
+  margin-top: var(--section-gap);
+}
+
+@media (max-width: 900px) {
+  .game-detail__layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-top: 20px;
+  }
+
+  .game-detail__poster {
+    position: relative;
+    top: auto;
+    width: min(64vw, 280px);
+    margin-inline: auto;
+  }
+
+  .game-detail__info {
+    max-width: none;
+  }
+
+  .game-detail__actions {
+    margin-top: 22px;
+  }
+
+  .game-detail__play {
+    flex: 1 1 auto;
   }
 
   .game-detail__stats {
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-detail__stats > div:nth-child(3) {
+    border-left: none;
+  }
+
+  .game-detail__stats > div:nth-child(n + 3) {
+    border-top: 1px solid var(--color-hairline);
   }
 }

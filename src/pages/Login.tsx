@@ -1,19 +1,21 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import { useAuth } from "../lib/auth";
+import { useAfterAuth } from "../lib/useAfterAuth";
 import "./auth.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
-  const navigate = useNavigate();
+  const afterAuth = useAfterAuth();
+  const location = useLocation();
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     login(email || "guest@obsidian.store");
-    navigate("/account");
+    afterAuth();
   };
 
   return (
@@ -22,8 +24,8 @@ export default function Login() {
         <p className="label-caps">Sign in</p>
         <h1>Welcome back</h1>
         <p className="auth-card__note">
-          This is a demo account system. Nothing is sent anywhere, no
-          password is checked. Any email signs you in.
+          Demo account system: nothing is sent anywhere and no password is
+          checked. Any email signs you in.
         </p>
         <form className="auth-form" onSubmit={submit}>
           <div className="auth-field">
@@ -31,6 +33,9 @@ export default function Login() {
             <input
               id="email"
               type="email"
+              inputMode="email"
+              autoComplete="email"
+              autoCapitalize="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
@@ -42,17 +47,21 @@ export default function Login() {
             <input
               id="password"
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Anything works"
             />
           </div>
-          <button className="btn btn--primary" type="submit">
+          <button className="btn btn--primary btn--block" type="submit">
             Sign in
           </button>
         </form>
         <p className="auth-switch">
-          New here? <Link to="/signup">Create an account</Link>
+          New here?{" "}
+          <Link to="/signup" state={location.state}>
+            Create an account
+          </Link>
         </p>
       </Reveal>
     </div>
